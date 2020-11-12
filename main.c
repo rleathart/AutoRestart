@@ -8,6 +8,8 @@
 
 volatile sig_atomic_t Flag = 0;
 
+#define WAIT_TIME 2 // Time to wait in seconds between restart attempts.
+
 void InterruptHandler(int Signal)
 {
   Flag = 1;
@@ -40,7 +42,7 @@ int main(int argc, char* argv[])
     /* Take ExitCode mod 255 since shell stores return value as 1 byte */
     ExitCode = system(Command) % 255;
     printf("Process exited: %d\n", ExitCode);
-    sleep(2);
+    sleep(WAIT_TIME);
   } while (ExitCode);
 
   return ExitCode;
