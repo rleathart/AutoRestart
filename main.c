@@ -6,13 +6,13 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-volatile sig_atomic_t Flag = 0;
+volatile sig_atomic_t SIGINT_Caught = 0;
 
 #define WAIT_TIME 2 // Time to wait in seconds between restart attempts.
 
-void InterruptHandler(int Signal)
+void sigint(int Signal)
 {
-  Flag = 1;
+  SIGINT_Caught = 1;
 }
 
 int main(int argc, char* argv[])
@@ -25,14 +25,14 @@ int main(int argc, char* argv[])
 
   /* Preserve the return value of the system process if we terminate with
    * Ctrl-C. */
-  signal(SIGINT, InterruptHandler);
+  signal(SIGINT, sigint);
 
   char* Command = argv[1];
 
   int ExitCode;
   do
   {
-    if (Flag)
+    if (SIGINT_Caught)
     {
       printf("\nInterrupt caught! Exiting %d ...\n", ExitCode);
       exit(ExitCode);
