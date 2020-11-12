@@ -6,7 +6,7 @@ $(PROGNAME): main.o
 	$(CC) main.o -o $(PROGNAME)
 
 clean:
-	rm *.o
+	rm -f *.o
 
 Clean: clean
-	rm $(PROGNAME)
+	rm -f $(PROGNAME)
